@@ -1,21 +1,9 @@
 const http = require('http')
 const url = require('url')
 const port = 8001
+const jsonData = require('./user')
 
-const capsules = [
-    [
-        { id: 1, name: 'Gilad' },
-        { id: 2, name: 'Guy' },
-        { id: 3, name: 'Michael' },
-        { id: 4, name: 'Shir' },
-        { id: 5, name: 'Talya' },
-        { id: 6, name: 'Osama' },
-    ], [
-        { id: 7, name: 'Rachel' },
-        { id: 8, name: 'Or' },
-        { id: 9, name: 'Shlomi' },
-    ]
-]
+const capsules = jsonData.capsules
 
 
 const server = http.createServer((req, res) => {

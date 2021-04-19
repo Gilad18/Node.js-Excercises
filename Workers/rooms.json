@@ -1,0 +1,11 @@
+{
+    "rooms" : [
+        {
+            "number" : 1 ,
+            "amount" : 5 ,
+            "name" : "London",
+            "isActive" : false,
+            "currentWorkers" : []
+        }
+    ]
+}

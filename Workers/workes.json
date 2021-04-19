@@ -1,0 +1,14 @@
+{
+    "workers" : [
+        {
+            "id"  : "300406493",
+            "name" : "Gilad",
+            "isActive" : false
+        },
+        {
+            "id"  : "300587874",
+            "name" : "Jhon",
+            "isActive" : false
+        }
+    ]
+}
