@@ -1,9 +1,7 @@
 const productModel = require('./model')
 
-const createNewProduct = (req,res) => {
+const createNewProduct = async (req,res) => {
     const { productName, productCategory, productDetails } = req.body;
-    console.log(req.body)
-
 
     const product = new productModel({
         productName : productName,
@@ -11,20 +9,61 @@ const createNewProduct = (req,res) => {
         productDetails : productDetails
     });
 
-product.save((err)=> {
-    if (err) return res.json({"error" : err})
-    return res.json({"success": product})
-})
+    try {
+       await product.save()
+       res.json({"success": product})
+    } catch (e){
+        res.json({"error" : err})
+    }
 }
 
-const getProducts = (req, res) => {
-    productModel.find({}).then((product) => {
-        return res.send(product)
-    });
+const getProducts = async (req, res) => {
+    try {
+        const data = await productModel.find({})
+        res.send(data)
+    } catch {
+          res.send(e)
+    }
+}
+
+const getProductByName = async (req,res) => {
+    const name = req.params.name;
+
+    try {
+       const product = await  productModel.find({productName:name})
+        res.send(product)
+    } catch {
+         res.status(400).send(e)
+    }
+}
+
+
+const getProductbyStatus = async (req,res) => {
+   try {
+     const activeProducts = await productModel.find({productIsActive:true})
+     res.send(activeProducts)
+   } catch {
+    res.status(400).send(e)
+   }
+}
+
+const getProductsByPrice = async (req,res) => {
+    const amount = req.params.amount;
+    try {
+       const products = await  productModel.find({});
+       const underAmountProducts = products.filter(pr => pr.productDetails.price <= amount)
+       res.send(underAmountProducts)
+    } 
+    catch {
+        res.status(400).send(e)
+    }
 }
 
 module.exports = {
     create: createNewProduct,
-    getAll : getProducts
+    getAll : getProducts,
+    getProductByName,
+    getProductbyStatus,
+    getProductsByPrice
     
 }
