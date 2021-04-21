@@ -37,7 +37,6 @@ const getProductByName = async (req,res) => {
     }
 }
 
-
 const getProductbyStatus = async (req,res) => {
    try {
      const activeProducts = await productModel.find({productIsActive:true})
@@ -59,11 +58,59 @@ const getProductsByPrice = async (req,res) => {
     }
 }
 
+const updateStatusAndDiscount = async (req, res) => {
+    const updates = Object.keys(req.body)
+    const allUpdates = ["productName","productCategory","productIsActive", "productDetails.discount", "productDetails.price", "productDetails.phone"]
+    const isValidUpdate = updates.every((item)=> {
+        return allUpdates.includes(item)
+    })
+
+    if (isValidUpdate) {
+       try {
+           const update = await productModel.findByIdAndUpdate(req.params.id , req.body, {new:true , runValidators:true})
+
+           if(update) {
+            res.send(update)
+           } else {
+            res.status(400).send(e)
+           }
+
+       } catch(err) {
+        res.status(400).send(e)
+       }
+    }
+    else {
+        res.status(400).send({error : 'You cant make this updates'})
+    }
+}
+
+const deleteProduct = async (req,res) => {
+    const deleted =  await productModel.findByIdAndDelete(req.params.id ,(err,doc) => {
+      if (err) return res.send(err)
+      if (doc) return res.send(doc)
+      return res.json({error : 'Product wasnt found' })
+       
+    })
+}
+
+const deleteAll = async (req ,res) => {
+    await productModel.findByIdAndDelete({},(err,doc) => {
+        if (err) return res.send(err)
+        if (doc) return res.send(doc)
+        return res.json({error : 'Product wasnt found' })
+         
+      })
+}
+
+
+
 module.exports = {
     create: createNewProduct,
     getAll : getProducts,
     getProductByName,
     getProductbyStatus,
-    getProductsByPrice
-    
+    getProductsByPrice,
+    updateStatusAndDiscount,
+    deleteProduct,
+    deleteAll
 }

@@ -12,6 +12,12 @@ router.get('/',(req,res)=>{
      productControllers.getProductbyStatus(req,res)
  }).get('/price/:amount', (req,res)=> {
      productControllers.getProductsByPrice(req,res)
+ }).put('/:id', (req,res) => {
+    productControllers.updateStatusAndDiscount(req,res)
+ }).delete('/:id', (req,res) => {
+    productControllers.deleteProduct(req,res)
+ }).delete('/ALL' , (req,res) => {
+    productControllers.deleteAll(req,res)
  })
 
 module.exports = router;
